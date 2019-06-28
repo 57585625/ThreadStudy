@@ -30,7 +30,7 @@ public class ExecutorServiceExample {
 }
 
 class MyTestRunnable implements Runnable{
-
+    int count = 3;
     ExecutorService executorService;
 
     public MyTestRunnable(ExecutorService executorService) {
@@ -48,10 +48,13 @@ class MyTestRunnable implements Runnable{
         executorService.execute(new Runnable() {
             @Override
             public void run() {
+                count --;             // 用count来记录异步线程执行次数，当所有线程都执行完异步程序后，调用shutdown方法关闭线程池
+                if(count ==0){
+                    executorService.shutdown();
+                }
                 System.out.println(Thread.currentThread().getName()+"异步执行。。。");
             }
         });
-        executorService.shutdown();
         System.out.println(Thread.currentThread().getName()+"执行结束。。。");
     }
 }
